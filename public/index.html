@@ -115,7 +115,7 @@
             title: document.getElementById('productTitle').innerText,
             description: document.getElementById('productDescription').innerText,
             price: document.getElementById('price').innerText.replace('$', '').trim(),
-            currency: 'USD'
+            currency: 'usd'
         };
         const cardBody = JSON.stringify(product || {});
         // visa checkout

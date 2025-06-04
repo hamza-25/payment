@@ -3,9 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Payment Cancelled</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>        
+        const urlParams = new URLSearchParams(window.location.search);
+        const info = JSON.parse(urlParams.get('info'));
+        if (!info) {
+            window.location.href = '/';
+        }
+    </script>
 </head>
-<body>
-    <p>cancel</p>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md">
+        <div class="bg-white rounded-xl shadow-md overflow-hidden text-center p-8">
+            <!-- Cancellation Icon -->
+            <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-red-100 mb-4">
+                <i class="fas fa-times text-red-600 text-2xl"></i>
+            </div>
+            
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Payment Cancelled</h2>
+            <p class="text-gray-600 mb-6">Your payment was not completed.</p>
+            
+            <!-- Order Summary -->
+            <div class="bg-gray-50 rounded-lg p-4 mb-6 text-left">
+                <h3 class="font-medium text-gray-800 mb-2">Order Not Processed</h3>
+                <div class="flex justify-between py-2 border-b border-gray-200">
+                    <span class="text-gray-600">Product:</span>
+                    <span id="title" class="font-medium">Premium Subscription</span>
+                </div>
+                <div class="flex justify-between py-2">
+                    <span class="text-gray-600">Amount:</span>
+                    <span id='price' class="font-medium">$99.00</span>
+                </div>
+            </div>
+            
+            <!-- Try Again Options -->
+            <div class="mb-6">
+                <p class="text-gray-600 mb-4">You can try again or choose a different payment method.</p>
+                <div class="space-y-3">
+                    <a id="url" href="/" class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition">
+                        Try Payment Again
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Support Info -->
+            <!-- <div class="text-sm text-gray-500">
+                <p>Having trouble? <a href="#" class="text-blue-600">Contact support</a></p>
+                <p class="mt-1">Your card was not charged.</p>
+            </div> -->
+        </div>
+    </div>
+    <script>
+
+        const priceTag = document.getElementById('price');
+        const titleTag = document.getElementById('title');
+        priceTag.innerText = '$' + info.price;
+        titleTag.innerText = info.title;
+    </script>
 </body>
 </html>

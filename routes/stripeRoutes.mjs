@@ -5,26 +5,27 @@ const router = express.Router();
 
 router.post('/create-checkout-session', async (req, res) => {
   try {
+    const { price, title, description, currency } = req.body;
+    
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'], // includes Apple Pay and Google Pay automatically
       mode: 'payment',
       line_items: [
         {
           price_data: {
-            currency: 'usd',
+            currency: currency,
             product_data: {
-              name: 'Sample Product',
-              description: 'Testing multiple payment methods',
+              name: title,
+              description: description,
             },
-            unit_amount: 999, // $19.99
+            unit_amount: Math.round(parseInt(price) * 100),
           },
           quantity: 1,
         },
       ],
-      success_url: 'http://localhost:8000/success.html',
-      cancel_url: 'http://localhost:8000/cancel.html',
+      success_url: `http://localhost:8000/success.html?info=${encodeURIComponent(JSON.stringify({price, title, description, currency}))}`,
+      cancel_url: `http://localhost:8000/cancel.html?info=${encodeURIComponent(JSON.stringify({price, title, description, currency}))}`,
     });
-
     res.json({ url: session.url });
   } catch (err) {
     console.error(err);
