@@ -22,8 +22,8 @@ export const createCheckoutSession = async (req, res) => {
           quantity: 1,
         },
       ],
-      success_url: `${process.env.DOMAIN}/success.html?info=${encodeURIComponent(JSON.stringify({price, title, description, currency}))}`,
-      cancel_url: `${process.env.DOMAIN}/cancel.html?info=${encodeURIComponent(JSON.stringify({price, title, description, currency}))}`,
+      success_url: `https://payment-dwh4.onrender.com/success.html?info=${encodeURIComponent(JSON.stringify({price, title, description, currency}))}`,
+      cancel_url: `https://payment-dwh4.onrender.com/cancel.html?info=${encodeURIComponent(JSON.stringify({price, title, description, currency}))}`,
     });
     res.json({ url: session.url });
   } catch (err) {
