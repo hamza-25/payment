@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import stripeRoute from './routes/stripeRoutes.mjs';
+import paypalRoute from './routes/paypalRoutes.mjs';
 dotenv.config();
 
 const app = express();
@@ -21,6 +22,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/stripe', stripeRoute);
+app.use('/paypal', paypalRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
