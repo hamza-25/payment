@@ -3,7 +3,7 @@ import {capturePaypalOrder, createPaypalOrder} from '../controllers/paypalContro
 
 const router = express.Router();
 
-router.get('/create-order', createPaypalOrder);
-router.get('/capture-order', capturePaypalOrder);
+router.post('/create-order', createPaypalOrder);
+router.post('/capture-order', capturePaypalOrder);
 
 export default router;

@@ -1,26 +1,3 @@
-<!-- <!DOCTYPE html>
-<html>
-<head>
-  <title>Stripe Test</title>
-</head>
-<body>
-  <h1>Buy something</h1>
-  <button id="checkout">Pay Now</button>
-
-  <script>
-    document.getElementById('checkout').addEventListener('click', async () => {
-      const res = await fetch('/stripe/create-checkout-session', { method: 'POST' });
-      const data = await res.json();
-      console.log(data);
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        alert('Something went wrong.');
-      }
-    });
-  </script>
-</body>
-</html> -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Payment</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AepzYj0ZrdMzljeTG3IoE1QnECtawp34EHCCFgHYFwTRV2R6xRJfHSZ74QpQEjTdUbbh1vQzXq7q29uC&currency=USD"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .payment-btn:hover {
@@ -81,7 +59,7 @@
                 <button id="checkoutVisa" class="payment-btn w-full bg-gray-600 hover:bg-gray-800 text-white font-medium py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center mb-3">
                     <div class="flex items-center justify-center w-full">
                         <i class="far fa-credit-card mr-2 text-lg"></i>
-                        <span>Pay with Credit Card</span>
+                        <span>Pay with Stripe</span>
                         <div class="ml-auto flex space-x-2">
                             <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/visa.svg" alt="Visa" class="h-6">
                             <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/mastercard.svg" alt="Mastercard" class="h-6">
@@ -90,10 +68,13 @@
                 </button>
 
                 <!-- PayPal Button -->
-                <button id="checkoutPaypal" class="payment-btn w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-medium py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center">
+                <!-- <button id="checkoutPaypal" class="payment-btn w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-medium py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center">
                     <i class="fab fa-paypal mr-2 text-lg"></i>
                     <span>Pay with PayPal</span>
-                </button>
+                </button> -->
+               
+                <div id="paypal-button-container"></div>
+
 
                 <div class="mt-6 pt-6 border-t border-gray-200">
                     <div class="flex items-center justify-between text-sm text-gray-500">
@@ -101,6 +82,36 @@
                         <span class="font-medium text-gray-900">$99.00</span>
                     </div>
                 </div>
+
+                <!-- start -->
+                 <div id="payment-popup" class="fixed bottom-4 right-4 max-w-sm w-full bg-white border-l-4 border-green-500 shadow-lg rounded-xl p-4 hidden z-50">
+                    <div class="flex items-start">
+                      <div class="flex-1">
+                        <h3 id="popup-title" class="text-lg font-semibold text-green-600">Payment Successful 🎉</h3>
+                        <p class="text-sm text-gray-700 mt-1"><span class="font-medium">Status:</span> <span id="popup-status">XXXX</span></p>
+                        <p class="text-sm text-gray-700 mt-1"><span class="font-medium">reference:</span> <span id="popup-reference">XXXX</span></p>
+                        <p class="text-sm text-gray-700"><span class="font-medium">Amount:</span> <span id="popup-amount">$00.00</span></p>
+                        <p class="text-sm text-gray-700"><span class="font-medium">Currency:</span> <span id="popup-currency">USD</span></p>
+                        <p class="text-sm text-gray-700"><span class="font-medium">Date:</span> <span id="popup-date">date</span></p>
+                      </div>
+                      <button onclick="document.getElementById('payment-popup').classList.add('hidden')" class="ml-4 text-gray-500 hover:text-gray-700">
+                        ✕
+                      </button>
+                    </div>
+                  </div>
+
+                  <div id="error-popup" class="fixed bottom-4 right-4 max-w-sm w-full bg-white border-l-4 border-red-500 shadow-lg rounded-xl p-4 hidden z-50">
+                    <div class="flex items-start">
+                      <div class="flex-1">
+                        <p id="result">error</p>
+                      </div>
+                      <button onclick="document.getElementById('error-popup').classList.add('hidden')" class="ml-4 text-gray-500 hover:text-gray-700">
+                        ✕
+                      </button>
+                    </div>
+                  </div>
+                 <!-- end -->
+
             </div>
         </div>
 
@@ -110,37 +121,6 @@
             <span>Secure payment encrypted</span>
         </div>
     </div>
-    <script>
-        const product = {
-            title: document.getElementById('productTitle').innerText,
-            description: document.getElementById('productDescription').innerText,
-            price: document.getElementById('price').innerText.replace('$', '').trim(),
-            currency: 'usd'
-        };
-        const cardBody = JSON.stringify(product || {});
-        // visa checkout
-        document.getElementById('checkoutVisa').addEventListener('click', async () => {
-          const res = await fetch('/stripe/create-checkout-session', { method: 'POST', body: cardBody, headers: { 'Content-Type': 'application/json' } });
-          const data = await res.json();
-          console.log(data);
-          if (data.url) {
-            window.location.href = data.url;
-          } else {
-            alert('Something went wrong.');
-          }
-        });
-
-        //paypal checkout
-        document.getElementById('checkoutPaypal').addEventListener('click', async () => {
-          const res = await fetch('##############', { method: 'POST', body: cardBody, headers: { 'Content-Type': 'application/json' }});
-          const data = await res.json();
-          console.log(data);
-          if (data.url) {
-            window.location.href = data.url;
-          } else {
-            alert('Something went wrong.');
-          }
-        });
-  </script>
+    <script src="./js/index.js"></script>
 </body>
 </html>
