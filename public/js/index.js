@@ -19,8 +19,7 @@ document.getElementById('checkoutVisa').addEventListener('click', async () => {
 
 paypal.Buttons({
   createOrder: async () => {
-    const res = await fetch('https://payment-dwh4.onrender.com/paypal/create-order', {
-    // const res = await fetch('http://localhost:8000/paypal/create-order', {
+    const res = await fetch('/paypal/create-order', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -30,8 +29,7 @@ paypal.Buttons({
     return data.id; // Return the order ID to PayPal
   },
   onApprove: async function(data) {
-    const res = await fetch('https://payment-dwh4.onrender.com/paypal/capture-order', {
-    // const res = await fetch('http://localhost:8000/paypal/capture-order', {
+    const res = await fetch('/paypal/capture-order', {
       method: 'POST',
     //   body: cardBody,
       headers: {

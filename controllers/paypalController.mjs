@@ -1,10 +1,12 @@
 import {getAccessToken} from '../utils/paypalMethods.mjs';
+import dotenv from 'dotenv';
+dotenv.config();
 
 export const createPaypalOrder = async (req, res) => {
     try {
         const { price, currency, description } = req.body;
         const accessToken = await getAccessToken();
-        const orderResponse = await fetch(`https://api-m.sandbox.paypal.com/v2/checkout/orders`, {
+        const orderResponse = await fetch(`${process.env.PAYPAL_API}/v2/checkout/orders`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${accessToken}`,
@@ -40,7 +42,7 @@ export const capturePaypalOrder = async (req, res) => {
     const { orderID } = req.body;
     const accessToken = await getAccessToken();
 
-    const captureRes = await fetch(`https://api-m.sandbox.paypal.com/v2/checkout/orders/${orderID}/capture`, {
+    const captureRes = await fetch(`${process.env.PAYPAL_API}/v2/checkout/orders/${orderID}/capture`, {
         method: 'POST',
          headers: {
             Authorization: `Bearer ${accessToken}`,

@@ -5,7 +5,7 @@ dotenv.config();
 const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, PAYPAL_API } = process.env;
 
 export const getAccessToken = async () => {
-    const response = await fetch(`https://api-m.sandbox.paypal.com/v1/oauth2/token`, {
+    const response = await fetch(`${PAYPAL_API}/v1/oauth2/token`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
